@@ -1,6 +1,7 @@
 import { getCategoryNews } from '@/utils/getCategoryNews';
 import { Box, Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const DynamicPage = async ({params,searchParams}) => {
@@ -18,26 +19,32 @@ const DynamicPage = async ({params,searchParams}) => {
   {
     data.map(news=>(
         <Grid key={news.id} item xs={6}>
-         <Card>
+          <Link href={`/${news.category}/${news._id}`}>
+          <Card>
       <CardActionArea>
-        <CardMedia>
+        <CardMedia sx={{"& img":{
+            width:"100%",
+            height:"250px"
+        }}}>
+            <Image src={news.thumbnail_url} width={800} height={199}alt='tops news'></Image>
         </CardMedia>
         <CardContent>
-            <p className='w-[100px] text-center rounded-lg p-1 bg-red-500 text-white'>
+            <span className='bg-red-500 px-2 text-white my-3 rounded'>
             {news.category}
-            </p>
-          <Typography gutterBottom >
-          Bitcoin Climbs as Elon Musk Says Tesla Likely to Accept it Again
+            </span>
+          <Typography gutterBottom variant='h6'>
+           {news.title.length>30? news.title.slice(0,30)+"...." : news.title}
           </Typography>
           <Typography className='my-3' color="text.secondary">
-          By Awlad Hossain - Mar 18 2023
+          {news.author.name} -{news.author.published_date}
           </Typography>
           <Typography>
-          It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout........
+            {news.details.length>200? news.details.slice(0,200)+"......":news.details}
+
           </Typography>
         </CardContent>
       </CardActionArea>
-        </Card>
+        </Card></Link>
   </Grid>
     ))
   }
